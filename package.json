@@ -12,7 +12,8 @@
     "start-server-dev": "cd server && npm run dev",
     "start-client-dev": "cd client && npm start",
     "start": "npm run start-server",
-    "dev": "concurrently \"npm:start-client-dev\" \"npm:start-server-dev\""
+    "dev": "concurrently \"npm:start-client-dev\" \"npm:start-server-dev\"",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -25,7 +26,21 @@
     "url": "https://github.com/toduko/poa/issues"
   },
   "homepage": "https://github.com/toduko/poa#readme",
-  "dependencies": {
-    "concurrently": "^7.0.0"
+  "devDependencies": {
+    "concurrently": "^7.0.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.6",
+    "prettier": "^2.6.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,json,md}": [
+      "prettier --write client",
+      "prettier --write server"
+    ]
   }
 }
