@@ -4,7 +4,6 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "prestart": "cd ../client && npm install && npm run build",
     "start": "NODE_ENV=prod node app.js",
     "dev": "NODE_ENV=dev nodemon app.js"
   },
