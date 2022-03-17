@@ -10,7 +10,7 @@
     "prestart-server": "npm install && npm run build-client",
     "start-server": "cd server && npm start",
     "start-server-dev": "cd server && npm run dev",
-    "start-client-dev": "cd client && npm start",
+    "start-client-dev": "cd client && npm run dev",
     "start": "npm run start-server",
     "dev": "concurrently \"npm:start-client-dev\" \"npm:start-server-dev\"",
     "prepare": "husky install"
@@ -38,7 +38,7 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx,json,md}": [
+    "*.{js,jsx,css,json,md}": [
       "prettier --write client",
       "prettier --write server"
     ]
