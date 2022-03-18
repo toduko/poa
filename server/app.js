@@ -5,9 +5,15 @@ const app = express();
 const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
+
+// Environment variables
+const environmentConstants = require("../env-constants.json");
+const ENV = process.env.NODE_ENV;
+const PORT = process.env.PORT || environmentConstants.DEV_PORT;
+
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: `http://localhost:${environmentConstants.CLIENT_PORT}`,
     methods: ["GET", "POST"],
   },
 });
@@ -15,11 +21,6 @@ const io = new Server(server, {
 // Routes
 const router = express.Router();
 const gamesRouter = require("./routes/games");
-
-// Environment variables
-const environmentConstants = require("../env-constants.json");
-const ENV = process.env.NODE_ENV;
-const PORT = process.env.PORT || environmentConstants.DEV_PORT;
 
 router.use("/games", gamesRouter);
 app.use("/api", router);
