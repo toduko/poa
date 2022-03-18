@@ -40,7 +40,8 @@
   "lint-staged": {
     "*.{js,jsx,css,json,md}": [
       "prettier --write client",
-      "prettier --write server"
+      "prettier --write server",
+      "git add"
     ]
   }
 }
