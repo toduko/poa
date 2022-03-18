@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 
-const Canvas = ({ width, height }) => {
+const Canvas = ({ width, height, color }) => {
   const canvasRef = useRef(null);
 
   const getCtx = () => {
@@ -14,14 +14,13 @@ const Canvas = ({ width, height }) => {
     const ctx = getCtx();
 
     ctx.lineCap = "round";
-    ctx.strokeStyle = "black";
+    ctx.strokeStyle = color || "black";
     ctx.lineWidth = 5;
   }, []);
 
   const startDrawing = ({ nativeEvent }) => {
     const { offsetX, offsetY } = nativeEvent;
     const ctx = getCtx();
-    console.log(ctx);
     ctx.beginPath();
     ctx.moveTo(offsetX, offsetY);
 

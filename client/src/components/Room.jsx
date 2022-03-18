@@ -6,7 +6,7 @@ const Room = () => {
   return (
     <div className="Room">
       <h1>Room {roomId}</h1>
-      <Canvas />
+      <Canvas color={"red"} />
     </div>
   );
 };
