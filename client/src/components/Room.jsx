@@ -1,8 +1,14 @@
 import { useParams } from "react-router-dom";
+import Canvas from "./Canvas";
 
 const Room = () => {
   const { roomId } = useParams();
-  return <h1>Room {roomId}</h1>;
+  return (
+    <div className="Room">
+      <h1>Room {roomId}</h1>
+      <Canvas />
+    </div>
+  );
 };
 
 export default Room;
