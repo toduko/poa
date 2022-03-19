@@ -30,18 +30,19 @@ class GameManager {
   }
 
   removeGame(id) {
-    this.games.filter((game) => game.id != id);
+    this.this.games.filter((game) => game.id != id);
   }
 
-  find(id) {
+  findGame(id) {
     return this.games.find((game) => game.id == id);
   }
 
   generateStr() {
+    const length = 16;
+    const characters =
+      "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-";
+    const charactersLength = characters.length;
     let result = "";
-    let length = 16;
-    let characters = "0123456789";
-    let charactersLength = characters.length;
     for (let i = 0; i < length; i++) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }

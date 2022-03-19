@@ -8,7 +8,7 @@ router.get("/", (_, res) => {
 
 router.get("/:id", (req, res) => {
   const { id } = req.params;
-  res.json(gameManager.find(id));
+  res.json(gameManager.findGame(id));
 });
 
 router.post("/", (req, res) => {
