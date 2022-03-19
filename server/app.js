@@ -13,7 +13,9 @@ const PORT = process.env.PORT || environmentConstants.DEV_PORT;
 
 const io = new Server(server, {
   cors: {
-    origin: `http://localhost:${environmentConstants.CLIENT_PORT}`,
+    origin: `http://localhost:${
+      ENV == "dev" ? environmentConstants.CLIENT_PORT : PORT
+    }`,
     methods: ["GET", "POST"],
   },
 });
