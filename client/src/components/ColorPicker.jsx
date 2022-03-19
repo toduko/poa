@@ -3,6 +3,7 @@ import "../styles/ColorPicker.css";
 
 const ColorPicker = ({ setColor, activeColor }) => {
   const colors = [
+    "black",
     "#FFFFFF",
     "#9400D3",
     "#0000FF",
@@ -10,7 +11,6 @@ const ColorPicker = ({ setColor, activeColor }) => {
     "#FFFF00",
     "#FF7F00",
     "#FF0000",
-    "black",
   ];
   return (
     <ul className="ColorPicker">

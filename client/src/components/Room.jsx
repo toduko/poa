@@ -5,6 +5,7 @@ import ColorPicker from "./ColorPicker";
 import Heading from "./Heading";
 import "../styles/Room.css";
 import Timer from "./Timer.jsx";
+import socket from "../socket";
 
 const Room = () => {
   const [color, setColor] = useState("black");
@@ -14,7 +15,7 @@ const Room = () => {
   const sendCanvasData = () => {
     const image = canvasRef.current
       .toDataURL("image/png")
-      .replace("image/png", "image/octet-stream");
+      .replace("image/p ng", "image/octet-stream");
     socket.emit("send-canvas-image", image);
   };
 
