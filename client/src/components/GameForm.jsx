@@ -1,8 +1,13 @@
 import GameModes from "../../../game_modes.json";
 import Button from "./Button";
 import "../styles/GameForm.css";
+import Heading from "./Heading";
+import Password from "./Password";
+import { useState } from "react";
 
 const GameForm = ({ togglePopup }) => {
+  const [input, setInput] = useState("");
+
   const getGameModeOptions = () => {
     let modes = [];
     for (const mode in GameModes) {
@@ -14,10 +19,11 @@ const GameForm = ({ togglePopup }) => {
     }
     return modes;
   };
+
   return (
     <form>
-      <h1>Create game</h1>
-      <input type="password" placeholder="Password" />
+      <Heading>Create game</Heading>
+      <Password password={input} setPassword={setInput} />
       <input type="number" min="30" max="120" defaultValue={60} />
       <select name="gameModes">{getGameModeOptions()}</select>
       <div className="Button-group">

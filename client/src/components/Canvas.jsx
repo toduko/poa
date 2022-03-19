@@ -1,7 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 
-const Canvas = ({ width, height, color }) => {
-  const canvasRef = useRef(null);
+const Canvas = ({ width, height, color, canvasRef }) => {
   const [isDrawing, setIsDrawing] = useState(false);
 
   const getCtx = () => {
@@ -48,7 +47,10 @@ const Canvas = ({ width, height, color }) => {
       onMouseUp={endDrawing}
       onMouseMove={draw}
       ref={canvasRef}
-      style={{ border: "1px solid black", margin: "4rem auto" }}
+      style={{
+        border: "1px solid black",
+        margin: "auto",
+      }}
     />
   );
 };
