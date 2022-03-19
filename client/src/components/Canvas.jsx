@@ -1,7 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 
-const Canvas = ({ width, height, color }) => {
-  const canvasRef = useRef(null);
+const Canvas = ({ width, height, color, canvasRef }) => {
   const [isDrawing, setIsDrawing] = useState(false);
 
   const getCtx = () => {
