@@ -2,34 +2,30 @@ import { useRef, useEffect, useState } from "react";
 
 const Canvas = ({ width, height, color }) => {
   const canvasRef = useRef(null);
+  const [isDrawing, setIsDrawing] = useState(false);
 
   const getCtx = () => {
     const canvas = canvasRef.current;
     return canvas.getContext("2d");
   };
 
-  const [isDrawing, setIsDrawing] = useState(false);
-
   useEffect(() => {
     const ctx = getCtx();
-
     ctx.lineCap = "round";
     ctx.strokeStyle = color || "black";
     ctx.lineWidth = 5;
-  }, []);
+  }, [color]);
 
   const startDrawing = ({ nativeEvent }) => {
     const { offsetX, offsetY } = nativeEvent;
     const ctx = getCtx();
     ctx.beginPath();
     ctx.moveTo(offsetX, offsetY);
-
     setIsDrawing(true);
   };
 
   const endDrawing = () => {
     const ctx = getCtx();
-
     ctx.closePath();
     setIsDrawing(false);
   };
@@ -40,7 +36,6 @@ const Canvas = ({ width, height, color }) => {
     }
     const { offsetX, offsetY } = nativeEvent;
     const ctx = getCtx();
-
     ctx.lineTo(offsetX, offsetY);
     ctx.stroke();
   };
