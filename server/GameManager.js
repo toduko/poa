@@ -2,7 +2,7 @@ class GameManager {
   games = [];
 
   addGame(gameData) {
-    const id = generateUID();
+    const id = this.generateUID();
     const game = { ...gameData, id };
     this.games.push(game);
     return game;
@@ -22,9 +22,11 @@ class GameManager {
   }
 
   disconnect(uid) {
-    games.forEach((game) => {
-      game.users.filter((userID) => userID != uid);
-    });
+    this.games = this.games.map((game) => ({
+      ...game,
+      users: game.users.filter((userID) => userID != uid),
+    }));
+    this.games = this.games.filter((game) => game.users.length > 0);
   }
 
   removeGame(id) {
