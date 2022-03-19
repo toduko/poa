@@ -8,6 +8,7 @@ import Timer from "./Timer.jsx";
 import socket from "../socket";
 
 const Room = () => {
+  const [roomState, setRoomState] = useState(0);
   const [color, setColor] = useState("black");
   const { roomId } = useParams();
   const canvasRef = useRef(null);
@@ -17,21 +18,37 @@ const Room = () => {
       .toDataURL("image/png")
       .replace("image/p ng", "image/octet-stream");
     socket.emit("send-canvas-image", image);
+    changeRoomState();
   };
 
-  return (
-    <div className="Room">
-      <Heading>Room {roomId}</Heading>
-      <Timer initialSeconds={5} timerOverHandler={sendCanvasData} />
-      <ColorPicker setColor={setColor} activeColor={color} />
-      <Canvas
-        width={0.7 * window.innerWidth}
-        height={0.7 * window.innerHeight}
-        color={color}
-        canvasRef={canvasRef}
-      />
-    </div>
-  );
+  const changeRoomState = () => {
+    setRoomState(roomState + 1);
+  };
+
+  if (roomState === 0) {
+    return (
+      <div className="Room">
+        <Timer initialSeconds={10} timerOverHandler={changeRoomState} />
+        <h1>Waiting state</h1>
+      </div>
+    );
+  } else if (roomState === 1) {
+    return (
+      <div className="Room">
+        <Heading>Room {roomId}</Heading>
+        <Timer initialSeconds={10} timerOverHandler={sendCanvasData} />
+        <ColorPicker setColor={setColor} activeColor={color} />
+        <Canvas
+          width={0.7 * window.innerWidth}
+          height={0.7 * window.innerHeight}
+          color={color}
+          canvasRef={canvasRef}
+        />
+      </div>
+    );
+  } else if (roomState === 2) {
+    return <h1>Assembeled picture goes here</h1>;
+  }
 };
 
 export default Room;
