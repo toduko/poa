@@ -2,9 +2,14 @@ import { useEffect, useState } from "react";
 import GameCard from "./GameCard";
 import "../styles/GameList.css";
 
-const GameList = () => {
+const GameList = ({ socket }) => {
   const [games, setGames] = useState([]);
-  useEffect(() => {}, []);
+
+  socket.on("update-lobby", (game) => {
+    if (!games.find((game) => game.id == socket.id)) {
+      setGames([...games, game]);
+    }
+  });
 
   return (
     <ul className="GameList">

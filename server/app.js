@@ -36,8 +36,11 @@ io.on("connection", (socket) => {
   console.log("A user connected");
   // console.log(socket);
   socket.on("disconnect", (_) => {
-    gameManager.disconnect(socket.id);
     console.log(`User with id: ${socket.id} disconnected`);
+  });
+
+  socket.on("create-game", (game) => {
+    socket.emit("update-lobby", game);
   });
 });
 
