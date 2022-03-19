@@ -5,6 +5,7 @@ const app = express();
 const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
+const bodyParser = require("body-parser");
 
 // Environment variables
 const environmentConstants = require("../env-constants.json");
@@ -25,6 +26,8 @@ const router = express.Router();
 const gamesRouter = require("./routes/games");
 const gameManager = require("./GameManager");
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 router.use("/games", gamesRouter);
 app.use("/api", router);
 
@@ -38,10 +41,10 @@ if (ENV == "prod") {
 
 io.on("connection", (socket) => {
   console.log("A user connected");
-  console.log(socket);
-  socket.on("disconnect", (socket) => {
+  // console.log(socket);
+  socket.on("disconnect", (_) => {
     gameManager.disconnect(socket.id);
-    console.log("A user disconnected");
+    console.log(`User with id: ${socket.id} disconnected`);
   });
 });
 
