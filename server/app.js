@@ -37,10 +37,15 @@ io.on("connection", (socket) => {
   // console.log(socket);
   socket.on("disconnect", (_) => {
     console.log(`User with id: ${socket.id} disconnected`);
+    socket.broadcast.emit("disconnected", socket.id);
+  });
+
+  socket.on("update-lobby", (game) => {
+    socket.broadcast.emit("update-lobby", game);
   });
 
   socket.on("create-game", (game) => {
-    socket.emit("update-lobby", game);
+    socket.broadcast.emit("update-lobby", game);
   });
 });
 
