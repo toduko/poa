@@ -1,0 +1,51 @@
+.ComboBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #9254c8;
+  position: relative;
+}
+
+.ComboBox-button {
+  position: relative;
+  width: min-content;
+  height: 40px;
+  width: 96px;
+  border-radius: 10px;
+  border-width: 3px;
+  border-color: #9254c8;
+  text-transform: capitalize;
+  color: #9254c8;
+  text-align: right;
+  padding: 0.5rem;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.ComboBox-options {
+  text-align: right;
+  position: absolute;
+  top: 40px;
+  width: 96px;
+  right: 0;
+  height: fit-content;
+  overflow: hidden;
+  display: list-item;
+  z-index: 1;
+  background: white;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+
+.ComboBox-options:active {
+  display: block;
+}
+
+.ComboBox-option {
+  margin: 0;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  border-bottom: 1px solid #9254c8;
+  background: white;
+  padding: 0.5rem;
+}
