@@ -3,11 +3,36 @@ class GameManager {
 
   addGame(gameData) {
     const id = generateUID();
-    this.games.push({ ...gameData, id });
+    const game = { ...gameData, id };
+    this.games.push(game);
+    return game;
+  }
+
+  joinGame(uid, gameID) {
+    let error = false;
+    let foundGame = false;
+    this.games.forEach((game) => {
+      if (game.id == gameID) {
+        foundGame = true;
+        if (game.users.includes(uid) || game.users.length == 4) error = true;
+        else game.users.push(uid);
+      }
+    });
+    return error || !foundGame;
+  }
+
+  disconnect(uid) {
+    games.forEach((game) => {
+      game.users.filter((userID) => userID != uid);
+    });
   }
 
   removeGame(id) {
     this.games.filter((game) => game.id != id);
+  }
+
+  find(id) {
+    return this.games.find((game) => game.id == id);
   }
 
   generateStr() {
@@ -31,4 +56,6 @@ class GameManager {
   }
 }
 
-module.exports = GameManager;
+const gameManager = new GameManager();
+
+module.exports = gameManager;

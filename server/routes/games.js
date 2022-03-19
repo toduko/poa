@@ -1,17 +1,19 @@
 const express = require("express");
-const GameManager = require("../GameManager");
+const gameManager = require("../GameManager");
 const router = express.Router();
-
-const gameManager = new GameManager();
 
 router.get("/", (_, res) => {
   res.json(gameManager.games);
 });
 
+router.get("/:id", (req, res) => {
+  const { id } = req.params;
+  res.json(gameManager.find(id));
+});
+
 router.post("/", (req, res) => {
   const game = req.body;
-  gameManager.addGame(game);
-  res.sendStatus(200);
+  res.json(gameManager.addGame(game));
 });
 
 module.exports = router;
