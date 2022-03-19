@@ -6,16 +6,15 @@ import Password from "./Password";
 import { useState } from "react";
 import TimerVariants from "../../../timer_variants.json";
 import ComboBox from "./ComboBox";
-import { useNavigate } from "react-router-dom";
 
-const GameForm = ({ togglePopup }) => {
+const GameForm = ({ togglePopup, socket }) => {
   const [input, setInput] = useState("");
   const [timer, setTimer] = useState(TimerVariants[0]);
   const [mode, setMode] = useState(GameModes.CLASSIC);
-  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    socket.emit("create-game", { id: socket.id, password: input, timer, mode });
   };
 
   return (

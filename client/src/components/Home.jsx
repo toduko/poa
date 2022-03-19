@@ -7,18 +7,22 @@ import Button from "./Button";
 import Heading from "./Heading";
 import "../styles/Home.css";
 
-const Home = () => {
+const Home = ({ socket, setIsInLobby }) => {
   const [isPopupActive, toggleIsPopupActive] = useToggleState(false);
 
   return (
     <div>
       <Heading>Home</Heading>
-      <GameList />
+      <GameList socket={socket} />
       <Button onClick={toggleIsPopupActive} className={"Home-create"}>
         Create
       </Button>
       <Popup show={isPopupActive}>
-        <GameForm togglePopup={toggleIsPopupActive} />
+        <GameForm
+          togglePopup={toggleIsPopupActive}
+          setIsInLobby={setIsInLobby}
+          socket={socket}
+        />
       </Popup>
     </div>
   );
