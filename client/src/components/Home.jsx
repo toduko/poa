@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useToggleState } from "../hooks";
 import Popup from "./Popup";
 import GameForm from "./GameForm";
 import GameList from "./GameList";
@@ -7,21 +8,17 @@ import Heading from "./Heading";
 import "../styles/Home.css";
 
 const Home = () => {
-  const [isPopupActive, setIsPopupActive] = useState(false);
-
-  const togglePopup = () => {
-    setIsPopupActive(!isPopupActive);
-  };
+  const [isPopupActive, toggleIsPopupActive] = useToggleState(false);
 
   return (
     <div>
       <Heading>Home</Heading>
       <GameList />
-      <Button onClick={togglePopup} className={"Home-create"}>
+      <Button onClick={toggleIsPopupActive} className={"Home-create"}>
         Create
       </Button>
       <Popup show={isPopupActive}>
-        <GameForm togglePopup={togglePopup} />
+        <GameForm togglePopup={toggleIsPopupActive} />
       </Popup>
     </div>
   );
