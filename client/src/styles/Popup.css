@@ -1,0 +1,13 @@
+.Popup {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%);
+  transform: translate(-50%);
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  border: 1px solid black;
+  padding: 2rem;
+}
