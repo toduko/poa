@@ -14,12 +14,11 @@ const Home = () => {
   return (
     <div>
       <h1>Home</h1>
-      <Popup show={isPopupActive}>
-        <GameForm />
-        <Button onClick={togglePopup}>Back</Button>
-      </Popup>
       <GameList />
       <Button onClick={togglePopup}>Create</Button>
+      <Popup show={isPopupActive}>
+        <GameForm togglePopup={togglePopup} />
+      </Popup>
     </div>
   );
 };
