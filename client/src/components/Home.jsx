@@ -7,7 +7,7 @@ import Button from "./Button";
 import Heading from "./Heading";
 import "../styles/Home.css";
 
-const Home = ({ socket, setIsInLobby }) => {
+const Home = ({ socket, setGame }) => {
   const [isPopupActive, toggleIsPopupActive] = useToggleState(false);
 
   return (
@@ -20,7 +20,7 @@ const Home = ({ socket, setIsInLobby }) => {
       <Popup show={isPopupActive}>
         <GameForm
           togglePopup={toggleIsPopupActive}
-          setIsInLobby={setIsInLobby}
+          setGame={setGame}
           socket={socket}
         />
       </Popup>

@@ -6,8 +6,7 @@ import io from "socket.io-client";
 
 const App = () => {
   const [socket, setSocket] = useState(null);
-  const [isInLobby, setIsInLobby] = useState(false);
-
+  const [game, setGame] = useState(null);
   useEffect(() => {
     const newSocket = io(`http://localhost:${DEV_PORT}`);
     setSocket(newSocket);
@@ -17,10 +16,10 @@ const App = () => {
   return (
     <div className="App">
       {socket ? (
-        isInLobby ? (
-          <Room socket={socket} setIsInLobby={setIsInLobby} />
+        game ? (
+          <Room socket={socket} setGame={setGame} game={game} />
         ) : (
-          <Home socket={socket} setIsInLobby={setIsInLobby} />
+          <Home socket={socket} setGame={setGame} game={game} />
         )
       ) : (
         <></>
