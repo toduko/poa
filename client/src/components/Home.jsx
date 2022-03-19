@@ -6,6 +6,8 @@ import GameList from "./GameList";
 import Button from "./Button";
 import Heading from "./Heading";
 import "../styles/Home.css";
+import Player from "./Player";
+import songUrl from "../assets/SongGood.mp3";
 
 const Home = () => {
   const [isPopupActive, toggleIsPopupActive] = useToggleState(false);
@@ -13,6 +15,7 @@ const Home = () => {
   return (
     <div>
       <Heading>Home</Heading>
+      <Player url={songUrl} />
       <GameList />
       <Button onClick={toggleIsPopupActive} className={"Home-create"}>
         Create
