@@ -1,6 +1,7 @@
 import GameModes from "../../../game_modes.json";
 import Button from "./Button";
 import "../styles/GameForm.css";
+import Heading from "./Heading";
 
 const GameForm = ({ togglePopup }) => {
   const getGameModeOptions = () => {
@@ -16,7 +17,7 @@ const GameForm = ({ togglePopup }) => {
   };
   return (
     <form>
-      <h1>Create game</h1>
+      <Heading>Create game</Heading>
       <input type="password" placeholder="Password" />
       <input type="number" min="30" max="120" defaultValue={60} />
       <select name="gameModes">{getGameModeOptions()}</select>

@@ -1,0 +1,10 @@
+.GameCard {
+  padding: 1rem;
+  box-shadow: 1px 1px 5px;
+  width: 300px;
+}
+
+.GameCard-join {
+  display: flex;
+  justify-content: space-between;
+}
