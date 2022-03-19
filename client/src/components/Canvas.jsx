@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-
+import Button from "./Button";
 const Canvas = ({ width, height, color, canvasRef }) => {
   const [isDrawing, setIsDrawing] = useState(false);
 
@@ -38,20 +38,27 @@ const Canvas = ({ width, height, color, canvasRef }) => {
     ctx.lineTo(offsetX, offsetY);
     ctx.stroke();
   };
+  const handleClick = () => {
+    getCtx().clearRect(0, 0, width, height);
+  };
 
   return (
-    <canvas
-      width={width}
-      height={height}
-      onMouseDown={startDrawing}
-      onMouseUp={endDrawing}
-      onMouseMove={draw}
-      ref={canvasRef}
-      style={{
-        border: "1px solid black",
-        margin: "auto",
-      }}
-    />
+    <div>
+      <Button onClick={handleClick}>Clear</Button>
+      <br />
+      <canvas
+        width={width}
+        height={height}
+        onMouseDown={startDrawing}
+        onMouseUp={endDrawing}
+        onMouseMove={draw}
+        ref={canvasRef}
+        style={{
+          border: "1px solid black",
+          margin: "auto",
+        }}
+      />
+    </div>
   );
 };
 
