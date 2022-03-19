@@ -1,7 +1,11 @@
 import "../styles/Button.css";
 
-const Button = ({ children }) => {
-  return <button className="Button">{children || "No Text"}</button>;
+const Button = ({ children, onClick }) => {
+  return (
+    <button onClick={onClick} className="Button rounded-corners">
+      {children || "No Text"}
+    </button>
+  );
 };
 
 export default Button;

@@ -1,7 +1,7 @@
 import "../styles/Popup.css";
 
 const Popup = ({ show, children }) => {
-  return <div className="Popup">{show ? children : ""}</div>;
+  return <>{show ? <div className="Popup">{children}</div> : ""}</>;
 };
 
 export default Popup;
