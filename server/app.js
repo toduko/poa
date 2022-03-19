@@ -23,6 +23,7 @@ const io = new Server(server, {
 // Routes
 const router = express.Router();
 const gamesRouter = require("./routes/games");
+const gameManager = require("./GameManager");
 
 router.use("/games", gamesRouter);
 app.use("/api", router);
@@ -38,6 +39,10 @@ if (ENV == "prod") {
 io.on("connection", (socket) => {
   console.log("A user connected");
   console.log(socket);
+  socket.on("disconnect", (socket) => {
+    gameManager.disconnect(socket.id);
+    console.log("A user disconnected");
+  });
 });
 
 server.listen(PORT, () => {
