@@ -48,7 +48,10 @@ const Canvas = ({ width, height, color }) => {
       onMouseUp={endDrawing}
       onMouseMove={draw}
       ref={canvasRef}
-      style={{ border: "1px solid black", margin: "4rem auto" }}
+      style={{
+        border: "1px solid black",
+        margin: "auto",
+      }}
     />
   );
 };
