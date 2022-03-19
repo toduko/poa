@@ -21,15 +21,8 @@ const io = new Server(server, {
   },
 });
 
-// Routes
-const router = express.Router();
-const gamesRouter = require("./routes/games");
-const gameManager = require("./GameManager");
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-router.use("/games", gamesRouter);
-app.use("/api", router);
 
 if (ENV == "prod") {
   app.use(express.static(path.resolve(__dirname, "../client/dist")));

@@ -1,16 +1,10 @@
 import { useEffect, useState } from "react";
 import GameCard from "./GameCard";
-import GameModes from "../../../game_modes.json";
 import "../styles/GameList.css";
 
 const GameList = () => {
   const [games, setGames] = useState([]);
-  useEffect(() => {
-    fetch("/api/games")
-      .then((res) => res.json())
-      .then((data) => setGames(data))
-      .catch((err) => console.error(err));
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <ul className="GameList">

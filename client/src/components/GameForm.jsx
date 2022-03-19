@@ -6,7 +6,6 @@ import Password from "./Password";
 import { useState } from "react";
 import TimerVariants from "../../../timer_variants.json";
 import ComboBox from "./ComboBox";
-import socket from "../socket";
 import { useNavigate } from "react-router-dom";
 
 const GameForm = ({ togglePopup }) => {
@@ -17,19 +16,6 @@ const GameForm = ({ togglePopup }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    fetch("/api/games", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        password: input,
-        timer,
-        mode,
-        users: [socket.id],
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => navigate(`/room/${data.id}`))
-      .catch((err) => console.error(err));
   };
 
   return (

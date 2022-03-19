@@ -1,11 +1,10 @@
 import { useParams } from "react-router-dom";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import Canvas from "./Canvas";
 import ColorPicker from "./ColorPicker";
 import Heading from "./Heading";
 import "../styles/Room.css";
 import Timer from "./Timer.jsx";
-import socket from "../socket";
 
 const Room = () => {
   const [roomState, setRoomState] = useState(0);
@@ -16,8 +15,8 @@ const Room = () => {
   const sendCanvasData = () => {
     const image = canvasRef.current
       .toDataURL("image/png")
-      .replace("image/p ng", "image/octet-stream");
-    socket.emit("send-canvas-image", image);
+      .replace("image/png", "image/octet-stream");
+    // send image to player
     changeRoomState();
   };
 
