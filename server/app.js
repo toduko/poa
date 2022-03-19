@@ -21,15 +21,8 @@ const io = new Server(server, {
   },
 });
 
-// Routes
-const router = express.Router();
-const gamesRouter = require("./routes/games");
-const gameManager = require("./GameManager");
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-router.use("/games", gamesRouter);
-app.use("/api", router);
 
 if (ENV == "prod") {
   app.use(express.static(path.resolve(__dirname, "../client/dist")));
@@ -43,8 +36,16 @@ io.on("connection", (socket) => {
   console.log("A user connected");
   // console.log(socket);
   socket.on("disconnect", (_) => {
-    gameManager.disconnect(socket.id);
     console.log(`User with id: ${socket.id} disconnected`);
+    socket.broadcast.emit("disconnected", socket.id);
+  });
+
+  socket.on("update-lobby", (game) => {
+    socket.broadcast.emit("update-lobby", game);
+  });
+
+  socket.on("create-game", (game) => {
+    socket.broadcast.emit("update-lobby", game);
   });
 });
 

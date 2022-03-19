@@ -1,23 +1,33 @@
 import { useParams } from "react-router-dom";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Canvas from "./Canvas";
 import ColorPicker from "./ColorPicker";
 import Heading from "./Heading";
 import "../styles/Room.css";
 import Timer from "./Timer.jsx";
-import socket from "../socket";
 
-const Room = () => {
+const Room = ({ socket, setGame, game }) => {
   const [roomState, setRoomState] = useState(0);
   const [color, setColor] = useState("black");
   const { roomId } = useParams();
   const canvasRef = useRef(null);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      socket.emit("update-lobby", game);
+
+      setCount(count + 1);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [count]);
 
   const sendCanvasData = () => {
     const image = canvasRef.current
       .toDataURL("image/png")
-      .replace("image/p ng", "image/octet-stream");
-    socket.emit("send-canvas-image", image);
+      .replace("image/png", "image/octet-stream");
+    // send image to player
     changeRoomState();
   };
 

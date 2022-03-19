@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
 import GameCard from "./GameCard";
-import GameModes from "../../../game_modes.json";
 import "../styles/GameList.css";
 
-const GameList = () => {
+const GameList = ({ socket }) => {
   const [games, setGames] = useState([]);
-  useEffect(() => {
-    fetch("/api/games")
-      .then((res) => res.json())
-      .then((data) => setGames(data))
-      .catch((err) => console.error(err));
-  }, []);
+
+  socket.on("update-lobby", (game) => {
+    if (!games.find((game) => game.id == socket.id)) {
+      setGames([...games, game]);
+    }
+  });
 
   return (
     <ul className="GameList">
