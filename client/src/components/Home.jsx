@@ -3,6 +3,7 @@ import Popup from "./Popup";
 import GameForm from "./GameForm";
 import GameList from "./GameList";
 import Button from "./Button";
+import Heading from "./Heading";
 
 const Home = () => {
   const [isPopupActive, setIsPopupActive] = useState(false);
@@ -13,7 +14,7 @@ const Home = () => {
 
   return (
     <div>
-      <h1>Home</h1>
+      <Heading>Home</Heading>
       <GameList />
       <Button onClick={togglePopup}>Create</Button>
       <Popup show={isPopupActive}>
