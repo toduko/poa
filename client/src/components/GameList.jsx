@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import GameCard from "./GameCard";
 import GameModes from "../../../game_modes.json";
+import "../styles/GameList.css";
 
 const GAMES = [
   { uid: 0, mode: GameModes.CLASSIC, timer: 60, password: "1234" },
@@ -19,7 +20,7 @@ const GameList = () => {
   }, []);
 
   return (
-    <ul>
+    <ul className="GameList">
       {games.map((game) => (
         <GameCard
           key={game.uid}
