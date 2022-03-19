@@ -1,24 +1,29 @@
-import { useRef, useEffect, useState } from "react";
 import Color from "./Color";
+import "../styles/ColorPicker.css";
 
-const ColorPicker = ({ setColor }) => {
+const ColorPicker = ({ setColor, activeColor }) => {
   const colors = [
-    "#fac89e",
-    "#e3e891",
-    "#c2fc99",
-    "#a3fcb3",
-    "#92e8d5",
-    "#96c8f2",
-    "#ada8ff",
-    "#ce94f7",
-    "#ed94dd",
-    "#fea8bb",
-    "white",
+    "#FFFFFF",
+    "#9400D3",
+    "#0000FF",
+    "#00FF00",
+    "#FFFF00",
+    "#FF7F00",
+    "#FF0000",
     "black",
   ];
-  return colors.map((color) => (
-    <Color key={color} color={color} setColor={setColor} />
-  ));
+  return (
+    <ul className="ColorPicker">
+      {colors.map((color) => (
+        <Color
+          key={color}
+          color={color}
+          setColor={setColor}
+          isActive={activeColor == color}
+        />
+      ))}
+    </ul>
+  );
 };
 
 export default ColorPicker;
