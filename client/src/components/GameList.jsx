@@ -3,27 +3,32 @@ import GameCard from "./GameCard";
 import "../styles/GameList.css";
 
 const GameList = ({ socket }) => {
-  const [games, setGames] = useState([]);
+  const [games, setGames] = useState({});
 
-  socket.on("update-lobby", (game) => {
-    if (!games.find((game) => game.id == socket.id)) {
-      setGames([...games, game]);
-    }
+  socket.on("update-games", (games) => {
+    setGames(games);
   });
 
-  return (
-    <ul className="GameList">
-      {games.map((game) => (
+  const getGamesList = () => {
+    let gamesList = [];
+    for (const gameID in games) {
+      const game = games[gameID];
+      gamesList.push(
         <GameCard
-          key={game.id}
-          uid={game.id}
+          socket={socket}
+          key={gameID}
+          uid={gameID}
           timer={game.timer}
           password={game.password}
           mode={game.mode}
         />
-      ))}
-    </ul>
-  );
+      );
+    }
+
+    return gamesList;
+  };
+
+  return <ul className="GameList">{getGamesList()}</ul>;
 };
 
 export default GameList;

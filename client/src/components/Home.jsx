@@ -12,6 +12,10 @@ import songUrl from "../assets/SongGood.mp3";
 const Home = ({ socket, setGame }) => {
   const [isPopupActive, toggleIsPopupActive] = useToggleState(false);
 
+  socket.on("game-joined", (game) => {
+    setGame(game);
+  });
+
   return (
     <div>
       <Heading>Home</Heading>
@@ -21,11 +25,7 @@ const Home = ({ socket, setGame }) => {
         Create
       </Button>
       <Popup show={isPopupActive}>
-        <GameForm
-          togglePopup={toggleIsPopupActive}
-          setGame={setGame}
-          socket={socket}
-        />
+        <GameForm togglePopup={toggleIsPopupActive} socket={socket} />
       </Popup>
     </div>
   );

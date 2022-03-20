@@ -21,6 +21,8 @@ const io = new Server(server, {
   },
 });
 
+let games = {};
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -32,20 +34,58 @@ if (ENV == "prod") {
   });
 }
 
+setInterval(() => {
+  io.emit("update-games", games);
+}, 300);
+
 io.on("connection", (socket) => {
   console.log("A user connected");
   // console.log(socket);
   socket.on("disconnect", (_) => {
     console.log(`User with id: ${socket.id} disconnected`);
-    socket.broadcast.emit("disconnected", socket.id);
+    let updatedGameID;
+    for (const gameID in games) {
+      if (games[gameID].players.includes(socket.id)) {
+        updatedGameID = gameID;
+        games[gameID].players = games[gameID].players.filter(
+          (player) => player.id != socket.id
+        );
+      }
+    }
+    if (updatedGameID)
+      io.to(updatedGameID).emit("update-game", games[updatedGameID]);
   });
 
-  socket.on("update-lobby", (game) => {
-    socket.broadcast.emit("update-lobby", game);
+  socket.on("join-game", ({ userID, gameID, game }) => {
+    if (games[gameID]) {
+      if (games[gameID].players.length == 4) {
+        socket.broadcast.emit("game-full");
+      } else {
+        socket.join(gameID);
+        games[gameID].players.push(userID);
+        games[gameID].id = gameID;
+        io.to(gameID).emit("game-joined", games[gameID]);
+        if (games[gameID].players.length == 4) {
+          io.to(gameID).emit("game-start");
+        }
+      }
+    } else {
+      console.log("New game");
+      games[gameID] = game;
+      games[gameID].id = gameID;
+      socket.join(gameID);
+      io.to(gameID).emit("game-joined", games[gameID]);
+    }
   });
 
-  socket.on("create-game", (game) => {
-    socket.broadcast.emit("update-lobby", game);
+  socket.on("send-image-data", ({ gameID, image }) => {
+    if (!games[gameID].images) games[gameID].images = [];
+    games[gameID].images.push(image);
+
+    if (games[gameID].images.length == 4) {
+      io.to(gameID).emit("receive-image-data", games[gameID].images);
+      delete games[gameID];
+    }
   });
 });
 
