@@ -48,7 +48,7 @@ io.on("connection", (socket) => {
       if (games[gameID].players.includes(socket.id)) {
         updatedGameID = gameID;
         games[gameID].players = games[gameID].players.filter(
-          (player) => player.id != socket.id
+          (player) => player != socket.id
         );
       }
     }
