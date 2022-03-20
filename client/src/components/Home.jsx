@@ -8,6 +8,9 @@ import Heading from "./Heading";
 import "../styles/Home.css";
 import Player from "./Player";
 import songUrl from "../assets/SongGood.mp3";
+console.log("innit music");
+window.musicState = false;
+window.Song = new Audio("../assets/SongGood.mp3");
 
 const Home = () => {
   const [isPopupActive, toggleIsPopupActive] = useToggleState(false);

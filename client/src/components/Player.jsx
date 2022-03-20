@@ -2,15 +2,32 @@ import React, { useState, useEffect } from "react";
 import "../styles/Button.css";
 import Button from "./Button";
 import "../styles/Player.css";
+window.isPLaying = false;
 
 const useAudio = (url) => {
-  const [audio] = useState(new Audio(url));
+  if (!window.myAudio) {
+    window.myAudio = new Audio(url);
+  }
+  const [audio] = useState(window.myAudio);
   const [playing, setPlaying] = useState(false);
 
-  const toggle = () => setPlaying(!playing);
+  const toggle = () => {
+    window.musicState = !window.musicState;
+    setPlaying(!playing);
+    window.isPLaying = !window.isPLaying;
+
+    // window.musicState ? window.Song.play() : window.Song.pause();
+    if (window.musicState) {
+      window.Song.pause();
+      window.Song.play();
+    } else {
+      window.Song.play();
+    }
+  };
 
   useEffect(() => {
-    playing ? audio.play() : audio.pause();
+    if (window.musicState) audio.play();
+    else audio.pause();
   }, [playing]);
 
   useEffect(() => {
@@ -29,7 +46,7 @@ const Player = ({ url }) => {
   return (
     <div>
       <Button onClick={toggle} className={"Volume-Button"}>
-        {playing ? "Mute" : "Unmute"}{" "}
+        {window.isPLaying ? "Pause" : "Play"}{" "}
       </Button>
     </div>
   );
