@@ -1,16 +1,29 @@
-import { Routes, Route } from "react-router-dom";
 import Home from "./Home";
-import PageNotFound from "./PageNotFound";
 import Room from "./Room";
+import { useEffect, useState } from "react";
+import { DEV_PORT } from "../../../env-constants.json";
+import io from "socket.io-client";
 
 const App = () => {
+  const [socket, setSocket] = useState(null);
+  const [game, setGame] = useState(null);
+  useEffect(() => {
+    const newSocket = io(`http://localhost:${DEV_PORT}`);
+    setSocket(newSocket);
+    return () => newSocket.close();
+  }, []);
+
   return (
     <div className="App">
-      <Routes>
-        <Route exact path="/" element={<Home />} />
-        <Route exact path="/room/:roomId" element={<Room />} />
-        <Route path="*" element={<PageNotFound />} />
-      </Routes>
+      {socket ? (
+        game ? (
+          <Room socket={socket} setGame={setGame} game={game} />
+        ) : (
+          <Home socket={socket} setGame={setGame} game={game} />
+        )
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

@@ -12,19 +12,23 @@ console.log("innit music");
 window.musicState = false;
 window.Song = new Audio("../assets/SongGood.mp3");
 
-const Home = () => {
+const Home = ({ socket, setGame }) => {
   const [isPopupActive, toggleIsPopupActive] = useToggleState(false);
 
   return (
     <div>
       <Heading>Home</Heading>
       <Player url={songUrl} />
-      <GameList />
+      <GameList socket={socket} />
       <Button onClick={toggleIsPopupActive} className={"Home-create"}>
         Create
       </Button>
       <Popup show={isPopupActive}>
-        <GameForm togglePopup={toggleIsPopupActive} />
+        <GameForm
+          togglePopup={toggleIsPopupActive}
+          setGame={setGame}
+          socket={socket}
+        />
       </Popup>
     </div>
   );
