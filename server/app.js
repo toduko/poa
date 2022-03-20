@@ -53,7 +53,7 @@ io.on("connection", (socket) => {
           (player) => player != socket.id
         );
       }
-      if (games[updatedGameID].players.length == 0) {
+      if (games[updatedGameID] && games[updatedGameID].players.length == 0) {
         delete games[updatedGameID];
       }
     }
