@@ -1,36 +1,42 @@
 import { useParams } from "react-router-dom";
-import { useRef, useState, useEffect } from "react";
-import Canvas from "./Canvas";
+import { useEffect, useRef, useState } from "react";
 import ColorPicker from "./ColorPicker";
 import Heading from "./Heading";
 import "../styles/Room.css";
 import Timer from "./Timer.jsx";
-import socket from "../socket";
 import Player from "./Player";
 import songUrl from "../assets/SongGood.mp3";
+import Button from "./Button";
 
-const Room = ({ socket, setGame, game }) => {
+const Room = ({ socket, game, setGame }) => {
+  const [isDrawing, setIsDrawing] = useState(false);
   const [roomState, setRoomState] = useState(0);
   const [color, setColor] = useState("black");
-  const { roomId } = useParams();
   const canvasRef = useRef(null);
-  const [count, setCount] = useState(0);
+  let canvas, ctx;
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      socket.emit("update-lobby", game);
+  const updateCanvasData = () => {
+    if (canvasRef.current) {
+      canvas = canvasRef.current;
+      ctx = canvas.getContext("2d");
+      ctx.lineCap = "round";
+      ctx.lineWidth = 5;
+      ctx.strokeStyle = color;
+    }
+  };
 
-      setCount(count + 1);
-    }, 300);
-
-    return () => clearTimeout(timer);
-  }, [count]);
+  socket.on("game-start", () => {
+    setRoomState(roomState + 1);
+  });
 
   const sendCanvasData = () => {
-    const image = canvasRef.current
-      .toDataURL("image/png")
-      .replace("image/png", "image/octet-stream");
-    // send image to player
+    updateCanvasData();
+
+    socket.emit("send-image-data", {
+      gameID: game.id,
+      image: canvas.toDataURL(),
+    });
+
     changeRoomState();
   };
 
@@ -38,11 +44,68 @@ const Room = ({ socket, setGame, game }) => {
     setRoomState(roomState + 1);
   };
 
+  socket.on("receive-image-data", (images) => {
+    updateCanvasData();
+
+    const canvasImages = images.map((image) => {
+      const img = new Image(300, 300);
+      img.src = image;
+      return img;
+    });
+
+    canvasImages[0].onload = () => {
+      ctx.drawImage(canvasImages[0], 0, 0, 300, 300);
+    };
+    canvasImages[1].onload = () => {
+      ctx.drawImage(canvasImages[1], 300, 0, 300, 300);
+    };
+    canvasImages[2].onload = () => {
+      ctx.drawImage(canvasImages[2], 0, 300, 300, 300);
+    };
+    canvasImages[3].onload = () => {
+      ctx.drawImage(canvasImages[3], 300, 300, 300, 300);
+    };
+  });
+
+  useEffect(() => {
+    if (roomState == 1) {
+      updateCanvasData();
+    }
+  }, [color]);
+
+  const startDrawing = ({ nativeEvent }) => {
+    updateCanvasData();
+    const { offsetX, offsetY } = nativeEvent;
+    ctx.beginPath();
+    ctx.moveTo(offsetX, offsetY);
+    setIsDrawing(true);
+  };
+
+  const endDrawing = () => {
+    updateCanvasData();
+    ctx.closePath();
+    setIsDrawing(false);
+  };
+
+  const draw = ({ nativeEvent }) => {
+    if (!isDrawing) {
+      return;
+    }
+    updateCanvasData();
+    const { offsetX, offsetY } = nativeEvent;
+    ctx.lineTo(offsetX, offsetY);
+    ctx.stroke();
+  };
+
+  const handleClick = () => {
+    updateCanvasData();
+    ctx.clearRect(0, 0, width, height);
+  };
+
   if (roomState === 0) {
     return (
       <div className="Room">
         <Player url={songUrl} />
-        <Timer initialSeconds={10} timerOverHandler={changeRoomState} />
         <h1>Waiting state</h1>
       </div>
     );
@@ -51,22 +114,39 @@ const Room = ({ socket, setGame, game }) => {
       <div className="Room">
         <Player url={songUrl} />
         <Heading>Room {roomId}</Heading>
-        <Timer initialSeconds={10} timerOverHandler={sendCanvasData} />
+        <Timer initialSeconds={game.timer} timerOverHandler={sendCanvasData} />
         <ColorPicker setColor={setColor} activeColor={color} />
-        <Canvas
-          width={0.7 * window.innerWidth}
-          height={0.7 * window.innerHeight}
-          color={color}
-          canvasRef={canvasRef}
+        <Button onClick={handleClick}>Clear</Button>
+        <br />
+        <canvas
+          width={300}
+          height={300}
+          onMouseDown={startDrawing}
+          onMouseUp={endDrawing}
+          onMouseMove={draw}
+          ref={canvasRef}
+          style={{
+            border: "1px solid black",
+            margin: "auto",
+          }}
         />
-      </div>
+      </>
     );
   } else if (roomState === 2) {
     return (
-      <div>
-        <h1>Assembeled picture goes here</h1>
+      <>
+        <canvas
+          width={600}
+          height={600}
+          ref={canvasRef}
+          style={{
+            border: "1px solid black",
+            margin: "auto",
+          }}
+        />
+        <Button onClick={() => window.location.reload(false)}>Leave</Button>
         <Player url={songUrl} />
-      </div>
+      </>
     );
   }
 };
