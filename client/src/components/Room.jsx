@@ -6,6 +6,7 @@ import Timer from "./Timer.jsx";
 import Player from "./Player";
 import songUrl from "../assets/SongGood.mp3";
 import Button from "./Button";
+import GameModes from "../../../game_modes.json";
 
 const Room = ({ socket, game }) => {
   const [isDrawing, setIsDrawing] = useState(false);
@@ -55,6 +56,7 @@ const Room = ({ socket, game }) => {
   });
 
   useEffect(() => {
+    console.log(game);
     if (roomState == 3) {
       updateCanvasData();
       images[0].onload = () => {
@@ -120,7 +122,10 @@ const Room = ({ socket, game }) => {
       <div className="Room">
         <Player url={songUrl} />
         <Heading>Room {game.id}</Heading>
-        <Timer initialSeconds={2} timerOverHandler={sendCanvasData} />
+        {game.mode == GameModes.THEME && (
+          <Heading>Your theme is {game.theme}</Heading>
+        )}
+        <Timer initialSeconds={game.timer} timerOverHandler={sendCanvasData} />
         <ColorPicker setColor={setColor} activeColor={color} />
         <Button onClick={handleClick}>Clear</Button>
         <br />

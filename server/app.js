@@ -9,6 +9,8 @@ const bodyParser = require("body-parser");
 
 // Environment variables
 const environmentConstants = require("../env-constants.json");
+const GameModes = require("../game_modes.json");
+const drawingThemes = require("../drawing_themes.json");
 const ENV = process.env.NODE_ENV;
 const PORT = process.env.PORT || environmentConstants.DEV_PORT;
 
@@ -70,7 +72,9 @@ io.on("connection", (socket) => {
         }
       }
     } else {
-      console.log("New game");
+      if (game.mode == GameModes.THEME)
+        game.theme =
+          drawingThemes[Math.floor(Math.random() * drawingThemes.length)];
       games[gameID] = game;
       games[gameID].id = gameID;
       socket.join(gameID);

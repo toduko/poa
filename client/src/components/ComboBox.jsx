@@ -23,6 +23,7 @@ const ComboBox = ({ options, currentOption, setCurrentOption, children }) => {
               value={option}
               onClick={() => {
                 setCurrentOption(option);
+                toggleShowOptions();
               }}
             >
               {option}

@@ -23,6 +23,7 @@
 }
 
 .ComboBox-options {
+  cursor: pointer;
   text-align: right;
   position: absolute;
   top: 40px;
