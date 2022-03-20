@@ -13,16 +13,17 @@ const GameList = ({ socket }) => {
     let gamesList = [];
     for (const gameID in games) {
       const game = games[gameID];
-      gamesList.push(
-        <GameCard
-          socket={socket}
-          key={gameID}
-          uid={gameID}
-          timer={game.timer}
-          password={game.password}
-          mode={game.mode}
-        />
-      );
+      if (!game.started)
+        gamesList.push(
+          <GameCard
+            socket={socket}
+            key={gameID}
+            uid={gameID}
+            timer={game.timer}
+            password={game.password}
+            mode={game.mode}
+          />
+        );
     }
 
     return gamesList;

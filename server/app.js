@@ -53,15 +53,23 @@ io.on("connection", (socket) => {
           (player) => player != socket.id
         );
       }
+      if (games[updatedGameID].players.length == 0) {
+        delete games[updatedGameID];
+      }
     }
     if (updatedGameID)
-      io.to(updatedGameID).emit("update-game", games[updatedGameID]);
+      io.to(updatedGameID).emit(
+        "update-game",
+        games[updatedGameID] || undefined
+      );
   });
 
   socket.on("join-game", ({ userID, gameID, game }) => {
     if (games[gameID]) {
       if (games[gameID].players.length == 4) {
         socket.broadcast.emit("game-full");
+      } else if (games[gameID].started) {
+        socket.broadcast.emit("game-has-started");
       } else {
         socket.join(gameID);
         games[gameID].players.push(userID);
@@ -69,6 +77,7 @@ io.on("connection", (socket) => {
         io.to(gameID).emit("game-joined", games[gameID]);
         if (games[gameID].players.length == 4) {
           io.to(gameID).emit("game-start");
+          games[gameID].started = true;
         }
       }
     } else {
@@ -86,7 +95,7 @@ io.on("connection", (socket) => {
     if (!games[gameID].images) games[gameID].images = [];
     games[gameID].images.push(image);
 
-    if (games[gameID].images.length == 4) {
+    if (games[gameID].images.length == games[gameID].players.length) {
       io.to(gameID).emit("receive-image-data", games[gameID].images);
       delete games[gameID];
     }

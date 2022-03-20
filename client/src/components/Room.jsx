@@ -59,18 +59,22 @@ const Room = ({ socket, game }) => {
     console.log(game);
     if (roomState == 3) {
       updateCanvasData();
-      images[0].onload = () => {
-        ctx.drawImage(images[0], 0, 0, 300, 300);
-      };
-      images[1].onload = () => {
-        ctx.drawImage(images[1], 300, 0, 300, 300);
-      };
-      images[2].onload = () => {
-        ctx.drawImage(images[2], 0, 300, 300, 300);
-      };
-      images[3].onload = () => {
-        ctx.drawImage(images[3], 300, 300, 300, 300);
-      };
+      if (images[0])
+        images[0].onload = () => {
+          ctx.drawImage(images[0], 0, 0, 300, 300);
+        };
+      if (images[1])
+        images[1].onload = () => {
+          ctx.drawImage(images[1], 300, 0, 300, 300);
+        };
+      if (images[2])
+        images[2].onload = () => {
+          ctx.drawImage(images[2], 0, 300, 300, 300);
+        };
+      if (images[3])
+        images[3].onload = () => {
+          ctx.drawImage(images[3], 300, 300, 300, 300);
+        };
     }
   }, [roomState]);
 
