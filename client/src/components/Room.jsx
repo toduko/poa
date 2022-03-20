@@ -1,10 +1,11 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-// import Canvas from "./Canvas";
 import ColorPicker from "./ColorPicker";
 import Heading from "./Heading";
 import "../styles/Room.css";
 import Timer from "./Timer.jsx";
+import Player from "./Player";
+import songUrl from "../assets/SongGood.mp3";
 import Button from "./Button";
 
 const Room = ({ socket, game, setGame }) => {
@@ -104,13 +105,16 @@ const Room = ({ socket, game, setGame }) => {
   if (roomState === 0) {
     return (
       <div className="Room">
+        <Player url={songUrl} />
         <h1>Waiting state</h1>
       </div>
     );
   } else if (roomState === 1) {
     return (
-      <>
-        <Timer initialSeconds={2} timerOverHandler={sendCanvasData} />
+      <div className="Room">
+        <Player url={songUrl} />
+        <Heading>Room {roomId}</Heading>
+        <Timer initialSeconds={game.timer} timerOverHandler={sendCanvasData} />
         <ColorPicker setColor={setColor} activeColor={color} />
         <Button onClick={handleClick}>Clear</Button>
         <br />
@@ -141,6 +145,7 @@ const Room = ({ socket, game, setGame }) => {
           }}
         />
         <Button onClick={() => window.location.reload(false)}>Leave</Button>
+        <Player url={songUrl} />
       </>
     );
   }
