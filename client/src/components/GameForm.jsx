@@ -14,9 +14,8 @@ const GameForm = ({ togglePopup, setGame, socket }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const game = { id: socket.id, password: input, timer, mode };
-    socket.emit("create-game", game);
-    setGame(game);
+    const game = { players: [socket.id], password: input, timer, mode };
+    socket.emit("join-game", { userID: socket.id, gameID: socket.id, game });
   };
 
   return (

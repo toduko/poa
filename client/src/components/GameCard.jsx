@@ -4,8 +4,12 @@ import Button from "./Button";
 import Password from "./Password";
 import { Link } from "react-router-dom";
 
-const GameCard = ({ mode, timer, password, uid }) => {
+const GameCard = ({ mode, timer, password, uid, socket }) => {
   const [input, setInput] = useState("");
+
+  const handleClick = () => {
+    socket.emit("join-game", { userID: socket.id, gameID: uid });
+  };
 
   return (
     <div className="GameCard rounded-corners">
@@ -13,9 +17,9 @@ const GameCard = ({ mode, timer, password, uid }) => {
       <p>Time: {timer} seconds</p>
       <p>Mode: {mode}</p>
       <div className="GameCard-join">
-        <Link to={`/room/${uid}`}>
-          <Button disabled={input != password}>Join</Button>
-        </Link>
+        <Button onClick={handleClick} disabled={input != password}>
+          Join
+        </Button>
         {password && <Password password={input} setPassword={setInput} />}
       </div>
     </div>
