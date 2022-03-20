@@ -1,4 +1,3 @@
-import { useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import ColorPicker from "./ColorPicker";
 import Heading from "./Heading";
@@ -8,11 +7,12 @@ import Player from "./Player";
 import songUrl from "../assets/SongGood.mp3";
 import Button from "./Button";
 
-const Room = ({ socket, game, setGame }) => {
+const Room = ({ socket, game }) => {
   const [isDrawing, setIsDrawing] = useState(false);
   const [roomState, setRoomState] = useState(0);
   const [color, setColor] = useState("black");
   const canvasRef = useRef(null);
+  const [images, setImages] = useState([]);
   let canvas, ctx;
 
   const updateCanvasData = () => {
@@ -45,27 +45,32 @@ const Room = ({ socket, game, setGame }) => {
   };
 
   socket.on("receive-image-data", (images) => {
-    updateCanvasData();
-
+    changeRoomState();
     const canvasImages = images.map((image) => {
       const img = new Image(300, 300);
       img.src = image;
       return img;
     });
-
-    canvasImages[0].onload = () => {
-      ctx.drawImage(canvasImages[0], 0, 0, 300, 300);
-    };
-    canvasImages[1].onload = () => {
-      ctx.drawImage(canvasImages[1], 300, 0, 300, 300);
-    };
-    canvasImages[2].onload = () => {
-      ctx.drawImage(canvasImages[2], 0, 300, 300, 300);
-    };
-    canvasImages[3].onload = () => {
-      ctx.drawImage(canvasImages[3], 300, 300, 300, 300);
-    };
+    setImages(canvasImages);
   });
+
+  useEffect(() => {
+    if (roomState == 3) {
+      updateCanvasData();
+      images[0].onload = () => {
+        ctx.drawImage(images[0], 0, 0, 300, 300);
+      };
+      images[1].onload = () => {
+        ctx.drawImage(images[1], 300, 0, 300, 300);
+      };
+      images[2].onload = () => {
+        ctx.drawImage(images[2], 0, 300, 300, 300);
+      };
+      images[3].onload = () => {
+        ctx.drawImage(images[3], 300, 300, 300, 300);
+      };
+    }
+  }, [roomState]);
 
   useEffect(() => {
     if (roomState == 1) {
@@ -99,22 +104,23 @@ const Room = ({ socket, game, setGame }) => {
 
   const handleClick = () => {
     updateCanvasData();
-    ctx.clearRect(0, 0, width, height);
+    ctx.clearRect(0, 0, 300, 300);
   };
 
   if (roomState === 0) {
     return (
       <div className="Room">
         <Player url={songUrl} />
-        <h1>Waiting state</h1>
+        <Heading>Room {game.id}</Heading>
+        <Heading>Waiting for players</Heading>
       </div>
     );
   } else if (roomState === 1) {
     return (
       <div className="Room">
         <Player url={songUrl} />
-        <Heading>Room {roomId}</Heading>
-        <Timer initialSeconds={game.timer} timerOverHandler={sendCanvasData} />
+        <Heading>Room {game.id}</Heading>
+        <Timer initialSeconds={2} timerOverHandler={sendCanvasData} />
         <ColorPicker setColor={setColor} activeColor={color} />
         <Button onClick={handleClick}>Clear</Button>
         <br />
@@ -130,9 +136,11 @@ const Room = ({ socket, game, setGame }) => {
             margin: "auto",
           }}
         />
-      </>
+      </div>
     );
   } else if (roomState === 2) {
+    return <Heading>Waiting for other players</Heading>;
+  } else if (roomState === 3) {
     return (
       <>
         <canvas
