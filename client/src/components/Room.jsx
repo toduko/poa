@@ -60,7 +60,7 @@ const Room = ({ socket, game, setGame }) => {
           canvasRef={canvasRef}
           socket={socket}
         />
-        <Button onClick={() => setGame({})}>Leave</Button>
+        <Button onClick={() => window.location.reload(false)}>Leave</Button>
       </>
     );
   }
